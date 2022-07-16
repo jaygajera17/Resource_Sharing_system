@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
 
-const Dashboard = () => {
-  const [user, setUser] = useState("");
+const MainPage = () => {
+  const [post, setPost] = useState("");
   useEffect(() => {
     const token = "Bearer " + localStorage.getItem("token");
     if (token) {
-      const getUser = async () => {
+      const getPost = async () => {
         const response = await fetch(
-          "http://localhost:9002/resourceShare/user/getUser",
+          "http://localhost:9002/resourceShare/user/Posts",
           {
             method: "POST",
             headers: {
@@ -22,9 +22,10 @@ const Dashboard = () => {
           window.location.href = "/login";
         }
         console.log(data);
-        setUser(data.user);
+        setPost(data);
+        console.log(post);
       };
-      getUser();
+      getPost();
     } else {
       alert("You are not signed in login first");
       window.location.href = "/login";
@@ -33,10 +34,16 @@ const Dashboard = () => {
 
   return (
     <div>
-      <h1>HELLO WORLD</h1>
-      <h1>Your Data: {user.name || "Name"} </h1>
+      <h2>h</h2>
+      {/* <h1>HELLO WORLD</h1>
+      {post.posts.map((data) => (
+        <h2>{data.subject}</h2>
+      ))} */}
+      {post.posts.map((ele) => {
+        return <h2>{ele.subject}</h2>;
+      })}
     </div>
   );
 };
 
-export default Dashboard;
+export default MainPage;
