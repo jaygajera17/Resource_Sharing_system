@@ -1,122 +1,107 @@
-import { useEffect, useState } from "react";
+import { useState } from 'react'
 // import { countDocuments } from '../../../Backend/models/userModel'
-
+import  './login.css'
 function App() {
-  const [user, setUser] = useState("");
-  const [subject, setSubect] = useState("");
-  const [topic, setTopic] = useState("");
-  const [description, setDescription] = useState("");
-  const token = "Bearer " + localStorage.getItem("token");
-
-  useEffect(() => {
-    loadData();
-  }, []);
-
-  let UserData;
-
-  const loadData = async () => {
-    // const token = "Bearer " + localStorage.getItem("token");
-    const token = "Bearer " + localStorage.getItem("token");
-
-    if (token) {
-      const getUser = async () => {
-        const response = await fetch(
-          "http://localhost:9002/resourceShare/user/getUser",
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              authorization: token,
-            },
+    const [subject, setSubect] = useState("");
+    const [topic, setTopic] = useState("");
+    const [description, setDescription] = useState("");
+  
+    async function addPost(event) {
+      // console.log(req.body);
+      event.preventDefault();
+      const token = "Bearer " + localStorage.getItem("token");
+      // const token = "Bearer " + localStorage.getItem("token");
+      if (token) {
+        const getPost = async () => {
+          const response = await fetch(
+            "http://localhost:9002/resourceShare/user/addPost",
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                authorization: token,
+              },
+              body: JSON.stringify({
+                subject,
+                topic,
+                description,
+              }),
+            }
+          );
+  
+          const data = await response.json();
+          console.log(data);
+          if (data.message === "fail") {
+            alert("post not added");
+            window.location.href = "/Dashboard";
+          } else if (data.message === "success") {
+            alert("post added");
+            window.location.href = "/Posts";
           }
-        );
-        UserData = await response.json();
-        if (UserData.status === "fail") {
-          alert(UserData.message);
-          window.location.href = "/login";
-        }
-        console.log(UserData);
-        setUser(UserData);
-        console.log("user" + user);
-      };
-      getUser();
-    } else {
-      alert("You are not signed in login first");
-      window.location.href = "/login";
+          // console.log(post);
+        };
+        getPost();
+      } else {
+        alert("You are not signed in login first");
+        window.location.href = "/login";
+      }
     }
-  };
+  
+	
 
-  async function addPost(event) {
-    // console.log(req.body);
-    event.preventDefault();
-    const token = "Bearer " + localStorage.getItem("token");
-    const id = user._id;
-    // const token = "Bearer " + localStorage.getItem("token");
-    if (token) {
-      const getPost = async () => {
-        const response = await fetch(
-          "http://localhost:9002/resourceShare/user/addPost",
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              authorization: token,
-            },
-            body: JSON.stringify({
-              subject,
-              topic,
-              description,
-            }),
-          }
-        );
+	return (
+		<div>
+			
+        
+  
+  <body>
+    <div class="bg-img">
+      <div class="content">
+        <header>ADD POST</header>
+        <form onSubmit={addPost}>
+          <div class="field">
+            <span class="fa fa-pen"></span>
+            <input type="text" value={subject}
+                    onChange={(e) => setSubect(e.target.value)} required placeholder="Subject"/>
+          </div>
+          <div class="field space">
+            <span class="fa fa-pen" style={{color:"black"}}></span>
+            <input type="text"  value={topic} onChange={(e) => setTopic(e.target.value)} class="pass-key" required placeholder="Topic"/>
+           
+          </div>
+          <div class="field space">
+          <span class="fa fa-pen" style={{color:"black"}}></span>
 
-        const data = await response.json();
-        console.log(data);
-        if (data.message === "fail") {
-          alert("post not added");
-          window.location.href = "/Dashboard";
-        } else if (data.message === "success") {
-          alert("post added");
-          window.location.href = "/Posts";
-        }
-        // console.log(post);
-      };
-      getPost();
-    } else {
-      alert("You are not signed in login first");
-      window.location.href = "/login";
-    }
-  }
-
-  return (
-    <div>
-      <h1>ADD POST</h1>
-      <form onSubmit={addPost}>
-        <input
-          value={subject}
-          onChange={(e) => setSubect(e.target.value)}
-          type="text"
-          placeholder="subject"
-        />
-        <br />
-        <input
-          value={topic}
-          onChange={(e) => setTopic(e.target.value)}
-          type="text"
-          placeholder="topic"
-        />
-        <br />
-        <input
+        <textarea
           value={description}
           onChange={(e) => setDescription(e.target.value)}
           type="text"
-          placeholder="description"
+          placeholder=" Description"
+          rows="3" cols="40"
         />
-        <br />
-        <input type="submit" value="submit" />
-      </form>
+      <div></div>
+      </div>
+          <div class="field">
+            <input  type="submit"
+                    value="Add" />
+          </div>
+        </form>
+       
+      </div>
     </div>
-  );
+
+    
+
+
+  </body>
+
+
+			
+			
+    
+  </div>
+
+	)
 }
 
-export default App;
+export default App
