@@ -3,6 +3,10 @@ import React, { useEffect, useState } from "react";
 const MainPage = () => {
   const [post, setPost] = useState("");
 
+  function setPostId(id) {
+    window.location.href = "/viewPost/" + id;
+  }
+
   useEffect(() => {
     loadData();
   }, []);
@@ -49,6 +53,7 @@ const MainPage = () => {
             <h1>Topic :{item.topic}</h1>
             <h1>Subject :{item.subject}</h1>
             {item.creator && <h1>Creator :{item.creator.name}</h1>}
+            <button onClick={() => setPostId(item._id)}>view full post</button>
             {/* <h1>Creator :{item.creator.name}</h1> */}
             {/* <h1>{item.photos}</h1> */}
             {/* {item.photos.length > 0 && item.photos.map((pho) => <h2>{pho}</h2>)} */}
@@ -64,7 +69,11 @@ const MainPage = () => {
 
       {/* {post.posts.map((data) => (<>)} */}
 
-      <img src="images/post/{post.photos[0]}" alt="here" srcset="" />
+      <img
+        src="client/public/images/post/tour-62ccf9f27bed7c0570768714-1658027360973-1.jpeg"
+        alt="here"
+        srcset=""
+      />
       {/* <h2>{post.message}</h2> */}
     </div>
   );
