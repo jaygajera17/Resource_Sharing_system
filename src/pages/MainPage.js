@@ -17,7 +17,7 @@ const MainPage = () => {
           }
         );
         const data = await response.json();
-        if (!data.status === "fail") {
+        if (data.status === "fail") {
           alert(data.message);
           window.location.href = "/login";
         }
@@ -34,7 +34,7 @@ const MainPage = () => {
 
   return (
     <div>
-      <h2>h</h2>
+      <h2>Post Topic</h2>
       {/* <h1>HELLO WORLD</h1>
       {post.posts.map((data) => (
         <h2>{data.subject}</h2>
@@ -42,6 +42,7 @@ const MainPage = () => {
       {post.posts.map((ele) => {
         return <h2>{ele.subject}</h2>;
       })}
+      {/* <h2>{post.message}</h2> */}
     </div>
   );
 };
