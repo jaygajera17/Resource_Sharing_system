@@ -4,6 +4,7 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import DashBoard from "./pages/Dashboard";
 import MainPage from "./pages/MainPage";
+import Addpost from "./pages/addPost";
 
 const App = () => {
   return (
@@ -20,6 +21,9 @@ const App = () => {
         </Route>
         <Route path="/Posts">
           <MainPage />
+        </Route>
+        <Route path="/addpost">
+          <Addpost />
         </Route>
       </Switch>
     </Router>
