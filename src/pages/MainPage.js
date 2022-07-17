@@ -2,12 +2,14 @@ import React, { useEffect, useState } from "react";
 
 const MainPage = () => {
   const [post, setPost] = useState("");
+
   useEffect(() => {
     loadData();
   }, []);
   const loadData = async () => {
     // const token = "Bearer " + localStorage.getItem("token");
     const token = "Bearer " + localStorage.getItem("token");
+
     if (token) {
       const getPost = async () => {
         const response = await fetch(
@@ -18,7 +20,6 @@ const MainPage = () => {
               "Content-Type": "application/json",
               authorization: token,
             },
-            
           }
         );
         const data = await response.json();
@@ -45,8 +46,10 @@ const MainPage = () => {
       {post &&
         post.posts.map((item) => (
           <div>
-            <h1>{item.topic}</h1>
-            <h1>{item.subject}</h1>
+            <h1>Topic :{item.topic}</h1>
+            <h1>Subject :{item.subject}</h1>
+            {item.creator && <h1>Creator :{item.creator.name}</h1>}
+            {/* <h1>Creator :{item.creator.name}</h1> */}
             {/* <h1>{item.photos}</h1> */}
             {/* {item.photos.length > 0 && item.photos.map((pho) => <h2>{pho}</h2>)} */}
             {/* {item.photos.length > 0 &&
