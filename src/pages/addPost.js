@@ -1,15 +1,56 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 // import { countDocuments } from '../../../Backend/models/userModel'
 
 function App() {
+  const [user, setUser] = useState("");
   const [subject, setSubect] = useState("");
   const [topic, setTopic] = useState("");
   const [description, setDescription] = useState("");
+  const token = "Bearer " + localStorage.getItem("token");
+
+  useEffect(() => {
+    loadData();
+  }, []);
+
+  let UserData;
+
+  const loadData = async () => {
+    // const token = "Bearer " + localStorage.getItem("token");
+    const token = "Bearer " + localStorage.getItem("token");
+
+    if (token) {
+      const getUser = async () => {
+        const response = await fetch(
+          "http://localhost:9002/resourceShare/user/getUser",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              authorization: token,
+            },
+          }
+        );
+        UserData = await response.json();
+        if (UserData.status === "fail") {
+          alert(UserData.message);
+          window.location.href = "/login";
+        }
+        console.log(UserData);
+        setUser(UserData);
+        console.log("user" + user);
+      };
+      getUser();
+    } else {
+      alert("You are not signed in login first");
+      window.location.href = "/login";
+    }
+  };
 
   async function addPost(event) {
     // console.log(req.body);
     event.preventDefault();
     const token = "Bearer " + localStorage.getItem("token");
+    const id = user._id;
     // const token = "Bearer " + localStorage.getItem("token");
     if (token) {
       const getPost = async () => {
